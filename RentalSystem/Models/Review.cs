@@ -7,9 +7,9 @@ public partial class Review
 {
     public int ReviewId { get; set; }
 
-    public int? ApartmentId { get; set; }
+    public int TenantId { get; set; }
 
-    public int? UserId { get; set; }
+    public int ListingId { get; set; }
 
     public int? Rating { get; set; }
 
@@ -17,9 +17,11 @@ public partial class Review
 
     public DateTime? CreatedAt { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
+    public string? AdminReply { get; set; }
 
-    public virtual Apartment? Apartment { get; set; }
+    public DateTime? AdminReplyAt { get; set; }
 
-    public virtual User? User { get; set; }
+    public virtual Apartment Listing { get; set; } = null!;
+
+    public virtual Customer Tenant { get; set; } = null!;
 }

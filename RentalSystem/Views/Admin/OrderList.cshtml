@@ -1,0 +1,99 @@
+﻿@{
+    ViewData["Title"] = "Dashboard | Reg";
+    Layout = "AdminLayout";
+}
+
+@{
+    var orders = ViewBag.OrderList as List<RentalSystem.Models.Booking> ?? new List<RentalSystem.Models.Booking>();
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        <strong>Error:</strong> @ViewBag.ErrorMessage
+    </div>
+}
+@if (!string.IsNullOrEmpty(TempData["SuccessMessage"] as string))
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+@if (!string.IsNullOrEmpty(TempData["ErrorMessage"] as string))
+{
+    <div class="alert alert-danger">
+        @TempData["ErrorMessage"]
+    </div>
+}
+
+<div class="container-scroller">
+    <partial name="/Views/Shared/HeaderAdmin.cshtml" />
+
+    <partial name="/Views/Shared/LeftPageAdmin.cshtml" />
+
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="col-lg-12 grid-margin stretch-card">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Order List</h4>
+                        <p class="card-description">
+                            Add class <code>.table-striped</code>
+                        </p>
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Customer Name</th>
+                                 
+                                        <th>Date</th>
+                                      
+              
+                                        <th>Status</th>
+                                        <th>Change Status</th>
+                                        <th>Detail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var order in orders)
+                                    {
+                                        <tr>
+                                            <td>@order.TenantId</td>
+                                    
+                                            <td>@order.Tenant.FullName </td>
+      
+                                            <td>@order.BookingDate.ToString("yyyy-MM-dd")</td>
+
+                                            <td><span class="badge badge-@(order.Status == "Wait" ? "warning" : "success")">@order.Status</span></td>
+                                            <td>
+                                                @if (order.Status == "Wait")
+                                                {
+                                                    <form asp-action="ChangeOrderStatus" asp-controller="Admin" method="post">
+                                                        <input type="hidden" name="orderId" value="@order.BookingId" />
+                                                        <button type="submit" class="btn btn-sm btn-primary">Accept</button>
+                                                    </form>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-success">Accepted</span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                <a href="@Url.Action("OrderDetail", "Admin", new { orderId = order.BookingId })" class="btn btn-sm btn-info">
+                                                    View Details
+                                                </a>
+                                            </td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</div>
+</div>

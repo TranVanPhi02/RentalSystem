@@ -1,0 +1,54 @@
+﻿    @{
+        ViewData["Title"] = "Customer Review | Rental";
+        Layout = "AdminLayout";
+    }
+
+  @model List<RentalSystem.Models.Review>
+
+
+    <div class="container-scroller">
+        <partial name="/Views/Shared/HeaderAdmin.cshtml" />
+
+        <partial name="/Views/Shared/LeftPageAdmin.cshtml" />
+
+    <h2>Reviews for Apartment: @ViewBag.ApartmentName</h2>
+
+    <div class="chat-box">
+        @foreach (var review in Model)
+        {
+            <div class="chat-message">
+                <div class="customer-msg">
+                    <strong>@review.Tenant.FullName:</strong>
+                    <p>@review.Comment</p>
+                    <span class="time">@review.CreatedAt?.ToString("yyyy-MM-dd HH:mm")</span>
+                </div>
+
+                @if (!string.IsNullOrEmpty(review.AdminReply))
+                {
+                    <div class="admin-msg">
+                        <strong>Admin:</strong>
+                        <p>@review.AdminReply</p>
+                        <span class="time">@review.AdminReplyAt?.ToString("yyyy-MM-dd HH:mm")</span>
+                    </div>
+                }
+
+                <form asp-action="ReplyReview" asp-controller="Admin" asp-route-id="@review.ReviewId" method="post">
+
+                    <input type="hidden" name="id" value="@review.ReviewId" />
+                    <textarea name="adminReply" required placeholder="Type your reply here..."></textarea>
+                    <button type="submit" class="btn btn-primary">Reply</button>
+                </form>
+            </div>
+        }
+    </div>
+    
+    </div>
+<style>
+    .chat-box { max-width: 600px; margin: auto; border: 1px solid #ccc; padding: 10px; border-radius: 10px; background: #f9f9f9; }
+    .chat-message { margin-bottom: 20px; }
+    .customer-msg, .admin-msg { padding: 10px; border-radius: 10px; margin-bottom: 5px; }
+    .customer-msg { background: #d9edf7; }
+    .admin-msg { background: #dff0d8; text-align: right; }
+    .time { font-size: 12px; color: gray; }
+    textarea { width: 100%; margin-top: 5px; }
+</style>

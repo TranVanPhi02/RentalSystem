@@ -1,0 +1,140 @@
+﻿@model RentalSystem.DTO.ApartmentCategoryDTO
+@{
+    ViewData["Title"] = "Apartment | Rental";
+    Layout = "CustomerLayout";
+}
+@if (ViewBag.IsLogin == true)
+{
+    <partial name="/Views/Shared/HeaderCustomer.cshtml" />
+}
+else
+{
+    <partial name="/Views/Shared/HeaderGuest.cshtml" />
+}
+<div class="featured-product product">
+<!-- Breadcrumb Start -->
+<div class="breadcrumb-wrap">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Products</a></li>
+            <li class="breadcrumb-item active">Product List</li>
+        </ul>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+<!-- Product List Start -->
+<div class="product-view">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="product-view-top">
+                                <form method="get" action="@Url.Action("Search", "Customer")">
+                                    <div class="row">
+                                        <!-- Tìm theo tiêu đề -->
+                                        <div class="col-md-3">
+                                            <input type="text" name="title" class="form-control" placeholder="Search by title">
+                                        </div>
+
+                                        <!-- Tìm theo địa điểm -->
+                                        <div class="col-md-3">
+                                            <input type="text" name="location" class="form-control" placeholder="Search by location">
+                                        </div>
+
+                                      
+
+                                        <!-- Tìm theo khoảng giá -->
+                                        <div class="col-md-3">
+                                            <input type="number" name="minPrice" class="form-control" placeholder="Min Price">
+                                            <input type="number" name="maxPrice" class="form-control" placeholder="Max Price">
+                                        </div>
+
+                                        <div class="col-md-12 text-center mt-3">
+                                            <button type="submit" class="btn btn-primary">Search</button>
+                                        </div>
+                                    </div>
+                                </form>
+
+                        </div>
+                    </div>
+                    @foreach (var apartment in Model.Apartments)
+                    {
+                        <div class="col-md-4">
+                            <div class="product-item">
+                                <div class="product-title">
+                                    <a href="@Url.Action("ApartmentDetail", "Customer", new { id = apartment.ListingId })">@apartment.Title</a>
+                                    <div class="ratting">
+                                        @for (int i = 0; i < 5; i++)
+                                        {
+                                            <i class="fa fa-star"></i>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="product-image">
+                                        <a href="@Url.Action("ApartmentDetail", "Customer", new { id = apartment.ListingId })">
+                                            @if (((List<RentalSystem.Models.Image>)apartment.ImagesNavigation).Count > 0)
+                                            {
+                                                <img src="@(((List<RentalSystem.Models.Image>)apartment.ImagesNavigation).First().ImageUrl)" alt="Apartment Image">
+                                            }
+                                            else
+                                            {
+                                                <img src="path/to/fallback-image.jpg" alt="No Image Available">
+                                            }
+
+
+
+                                        </a>
+                                    <div class="product-action">
+                                        <a href="#"><i class="fa fa-cart-plus"></i></a>
+                                        <a href="#"><i class="fa fa-heart"></i></a>
+                                        <a href="#"><i class="fa fa-search"></i></a>
+                                    </div>
+                                </div>
+                                <div class="product-price">
+                                    <h3><span>$</span>@apartment.Price</h3>
+                                        <form method="post" action="@Url.Action("Create", "Customer", new { area = "" })">
+                                            <input type="hidden" name="listingId" value="@apartment.ListingId" />
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-shopping-bag"></i> Booking Now
+                                            </button>
+                                        </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+             
+            </div>
+
+                <!-- Side Bar Start -->
+                <div class="col-lg-4 sidebar">
+                    <div class="sidebar-widget category">
+                        <h2 class="title">Category</h2>
+                        <nav class="navbar bg-light">
+                            <ul class="navbar-nav">
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="@Url.Action("Search", "Customer", new { categoryId = category.CategoryId })">
+                                            <i class="fa fa-list"></i> @category.CategoryName
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+
+
+
+            
+
+            </div>
+            <!-- Side Bar End -->
+        </div>
+    </div>
+</div>
+<!-- Product List End -->  

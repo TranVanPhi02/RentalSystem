@@ -7,21 +7,17 @@ public partial class Booking
 {
     public int BookingId { get; set; }
 
-    public int? ApartmentId { get; set; }
+    public int TenantId { get; set; }
 
-    public int? UserId { get; set; }
+    public int ListingId { get; set; }
 
-    public DateOnly StartDate { get; set; }
-
-    public DateOnly EndDate { get; set; }
-
-    public decimal? TotalPrice { get; set; }
+    public DateOnly BookingDate { get; set; }
 
     public string? Status { get; set; }
 
     public DateTime? CreatedAt { get; set; }
 
-    public virtual Apartment? Apartment { get; set; }
+    public virtual Apartment Listing { get; set; } = null!;
 
-    public virtual User? User { get; set; }
+    public virtual Customer Tenant { get; set; } = null!;
 }

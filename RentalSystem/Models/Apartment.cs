@@ -5,39 +5,43 @@ namespace RentalSystem.Models;
 
 public partial class Apartment
 {
-    public int ApartmentId { get; set; }
+    public int ListingId { get; set; }
+
+    public int LandlordId { get; set; }
 
     public string Title { get; set; } = null!;
 
-    public string? Description { get; set; }
+    public string Description { get; set; } = null!;
 
     public decimal Price { get; set; }
 
-    public decimal Area { get; set; }
-
     public string Location { get; set; } = null!;
 
-    public string? Address { get; set; }
+    public double Area { get; set; }
 
-    public int NumberOfBedrooms { get; set; }
+    public int Bedrooms { get; set; }
 
-    public int NumberOfBathrooms { get; set; }
-
-    public string? Amenities { get; set; }
+    public int Bathrooms { get; set; }
 
     public string? Images { get; set; }
 
+    public DateOnly AvailableFrom { get; set; }
+
+    public string? Status { get; set; }
+
     public DateTime? CreatedAt { get; set; }
 
-    public DateTime? UpdatedAt { get; set; }
-
-    public int? UserId { get; set; }
+    public int? CategoryId { get; set; }
 
     public virtual ICollection<Booking> Bookings { get; set; } = new List<Booking>();
 
+    public virtual Category? Category { get; set; }
+
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     public virtual ICollection<Image> ImagesNavigation { get; set; } = new List<Image>();
 
-    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
+    public virtual Customer Landlord { get; set; } = null!;
 
-    public virtual User? User { get; set; }
+    public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 }

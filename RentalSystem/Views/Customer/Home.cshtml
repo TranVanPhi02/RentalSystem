@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Trang Chủ | Rental";
+    Layout = "CustomerLayout";
+}
+@if (ViewBag.IsLogin == true)
+{
+    <partial name="/Views/Shared/HeaderCustomer.cshtml" />
+}
+else
+{
+    <partial name="/Views/Shared/HeaderGuest.cshtml" />
+}
+<div class="featured-product product">
+
+<div class="container-fluid">
+    <div class="section-header">
+        <h1>Các loại căn hộ</h1>
+    </div>
+    <div class="row align-items-center product-slider product-slider-4">
+        @foreach (var apart in Model)
+        {
+            <div class="col-lg-3">
+                <div class="product-item">
+                    <div class="product-title">
+                            <a href="@Url.Action("ApartmentDetail", "Customer", new { id = apart.ListingId })">@apart.Title</a>
+                        <div class="ratting">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                        </div>
+                    </div>
+                    <div class="product-image">
+                            <a href="@Url.Action("ApartmentDetail", "Customer", new { id = apart.ListingId })">
+                                @if (((List<RentalSystem.Models.Image>)apart.ImagesNavigation).Count > 0)
+                                {
+                                    <img src="@(((List<RentalSystem.Models.Image>)apart.ImagesNavigation).First().ImageUrl)" alt="Apartment Image">
+                                }
+                                else
+                                {
+                                    <img src="path/to/fallback-image.jpg" alt="No Image Available">
+                                }
+
+
+
+                        </a>
+                        <div class="product-action">
+                            <a href="#"><i class="fa fa-cart-plus"></i></a>
+                            <a href="#"><i class="fa fa-heart"></i></a>
+                            <a href="#"><i class="fa fa-search"></i></a>
+                        </div>
+                    </div>
+                    <div class="product-price">
+                        <h3><span>$</span>@apart.Price</h3>
+                        <a class="btn" href=""><i class="fa fa-shopping-cart"></i>Thuê</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+</div>
